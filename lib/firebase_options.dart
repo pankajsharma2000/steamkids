@@ -71,4 +71,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'steamkids.firebasestorage.app',
     iosBundleId: 'com.example.steamkids',
   );
+
 }
