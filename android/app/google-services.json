@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "41141891810",
+    "project_id": "steamkids",
+    "storage_bucket": "steamkids.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41141891810:android:d1720c23168d32a97de4bb",
+        "android_client_info": {
+          "package_name": "com.example.steamkids"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxS5Yuc6dKKhKa0KKFOLDtnALQOzWzw2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
