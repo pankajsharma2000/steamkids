@@ -1,1 +1,120 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"steamkids","appId":"1:41141891810:android:d1720c23168d32a97de4bb","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"steamkids","appId":"1:41141891810:ios:68c8e949db1c75a47de4bb","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"steamkids","configurations":{"android":"1:41141891810:android:d1720c23168d32a97de4bb","ios":"1:41141891810:ios:68c8e949db1c75a47de4bb","web":"1:41141891810:web:0e6a982b1f19c8697de4bb"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "steamkids",
+          "appId": "1:41141891810:android:d1720c23168d32a97de4bb",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "steamkids",
+          "appId": "1:41141891810:ios:68c8e949db1c75a47de4bb",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "steamkids",
+          "configurations": {
+            "android": "1:41141891810:android:d1720c23168d32a97de4bb",
+            "ios": "1:41141891810:ios:68c8e949db1c75a47de4bb",
+            "web": "1:41141891810:web:0e6a982b1f19c8697de4bb"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "apphosting": {
+      "port": 5002,
+      "rootDirectory": "./",
+      "startCommand": "flutter run -d web-server --web-port 5002"
+    },
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 5003
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "storage": {
+      "port": 9199
+    },
+    "eventarc": {
+      "port": 9299
+    },
+    "dataconnect": {
+      "port": 9399,
+      "dataDir": "dataconnect/.dataconnect/pgliteData"
+    },
+    "tasks": {
+      "port": 9499
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  },
+  "dataconnect": {
+    "source": "dataconnect"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ],
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ],
+  "hosting": {
+    "public": "y",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "remoteconfig": {
+    "template": "remoteconfig.template.json"
+  },
+  "extensions": {},
+  "database": {
+    "rules": "database.rules.json"
+  }
+}
