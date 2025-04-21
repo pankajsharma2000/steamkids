@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>41141891810-hjfvtib732qd9mothvth5sqgsqf7of5v.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.41141891810-hjfvtib732qd9mothvth5sqgsqf7of5v</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAj5M6wmGRbc4ICv3wMWWKyqzfUFVUxEys</string>
 	<key>GCM_SENDER_ID</key>
@@ -26,5 +30,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:41141891810:ios:68c8e949db1c75a47de4bb</string>
+	<key>DATABASE_URL</key>
+	<string>https://steamkids-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

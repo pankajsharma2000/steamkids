@@ -18,9 +18,10 @@ Future<void> main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  if (kDebugMode) {
-    await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-  }
+  // We will comment following lines to use actual Firebase services
+  //if (kDebugMode) {
+  // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  //}
 
   runApp(const ProviderScope(child: MyApp()));
 }
