@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'STEAM Kids',
-      routerConfig: AppRouter.config,
+      routerConfig: AppRouter.router, // Use the GoRouter instance
       theme: ThemeData(
         // This is the theme of your application.
         //
