@@ -3,6 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:steamkids/common/presentation/auth/pages/login_page.dart';
 import 'package:steamkids/common/presentation/auth/pages/register_page.dart';
 import 'package:steamkids/common/presentation/home/pages/home_page.dart';
+import 'package:steamkids/common/presentation/home/pages/profile_page.dart';
+import 'package:steamkids/common/presentation/home/pages/clubs_page.dart';
+import 'package:steamkids/common/presentation/home/pages/search_page.dart';
+import 'package:steamkids/common/presentation/home/pages/teams_page.dart';
+import 'package:steamkids/common/presentation/home/pages/sessions_page.dart';
+import 'package:steamkids/common/presentation/home/pages/wall_page.dart';
+import 'package:steamkids/common/presentation/home/pages/my_team_page.dart';
+import 'package:steamkids/common/presentation/home/pages/ai_page.dart';
 import 'package:steamkids/common/presentation/settings/pages/settings_page.dart';
 
 class AppRouter {
@@ -117,58 +125,40 @@ class AppRouter {
             path: '/settings',
             builder: (context, state) => const SettingsPage(),
           ),
-          // Add routes for the new pages
           GoRoute(
             path: '/profile',
-            builder: (context, state) => const PlaceholderPage(title: 'Profile'),
+            builder: (context, state) => const ProfilePage(),
           ),
           GoRoute(
             path: '/clubs',
-            builder: (context, state) => const PlaceholderPage(title: 'Clubs'),
+            builder: (context, state) => const ClubsPage(),
           ),
           GoRoute(
             path: '/search',
-            builder: (context, state) => const PlaceholderPage(title: 'Search'),
+            builder: (context, state) => const SearchPage(),
           ),
           GoRoute(
             path: '/teams',
-            builder: (context, state) => const PlaceholderPage(title: 'Teams'),
+            builder: (context, state) => const TeamsPage(),
           ),
           GoRoute(
             path: '/sessions',
-            builder: (context, state) => const PlaceholderPage(title: 'Sessions'),
+            builder: (context, state) => const SessionsPage(),
           ),
           GoRoute(
             path: '/wall',
-            builder: (context, state) => const PlaceholderPage(title: 'Wall'),
+            builder: (context, state) => const WallPage(),
           ),
           GoRoute(
             path: '/my-team',
-            builder: (context, state) => const PlaceholderPage(title: 'My Team'),
+            builder: (context, state) => const MyTeamPage(),
           ),
           GoRoute(
             path: '/ai',
-            builder: (context, state) => const PlaceholderPage(title: 'AI'),
+            builder: (context, state) => const AIPage(),
           ),
         ],
       ),
     ],
   );
-}
-
-// Placeholder page for new routes
-class PlaceholderPage extends StatelessWidget {
-  final String title;
-
-  const PlaceholderPage({super.key, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(
-        child: Text('Welcome to $title!'),
-      ),
-    );
-  }
 }
