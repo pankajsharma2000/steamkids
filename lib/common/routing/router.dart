@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:steamkids/common/presentation/home/pages/home_page.dart';
 import 'package:steamkids/common/presentation/auth/pages/login_page.dart';
+import 'package:steamkids/common/presentation/auth/pages/register_page.dart';
+import 'package:steamkids/common/presentation/home/pages/home_page.dart';
 import 'package:steamkids/common/routing/route_names.dart';
 
 class AppRouter {
@@ -10,6 +11,10 @@ class AppRouter {
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/register',
+        builder: (context, state) => const RegisterPage(),
       ),
       GoRoute(
         path: '/home',
