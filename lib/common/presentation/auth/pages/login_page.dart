@@ -6,97 +6,93 @@ import 'package:steamkids/common/presentation/home/pages/home_page.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart'; // For kDebugMode
 import 'package:go_router/go_router.dart'; // Import GoRouter
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:steamkids/common/providers/auth_provider.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
 
-class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+    Future<void> signInWithEmailAndPassword() async {
+      try {
+        final String email = emailController.text.trim();
+        final String password = passwordController.text.trim();
 
-  Future<void> _signInWithEmailAndPassword() async {
-    try {
-      final String email = _emailController.text.trim();
-      final String password = _passwordController.text.trim();
-
-      if (email.isEmpty || password.isEmpty) {
-        debugPrint('Email and password cannot be empty');
-        return;
-      }
-
-      // Sign in with email and password
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-
-      // Navigate to HomePage after successful login using GoRouter
-      context.go('/home'); // Use the route name defined in your GoRouter configuration
-    } catch (e) {
-      debugPrint('Error during email/password sign-in: $e');
-    }
-  }
-
-  Future<void> _registerWithEmailAndPassword() async {
-    try {
-      final String email = _emailController.text.trim();
-      final String password = _passwordController.text.trim();
-
-      if (email.isEmpty || password.isEmpty) {
-        debugPrint('Email and password cannot be empty');
-        return;
-      }
-
-      // Register with email and password
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
-
-      debugPrint('User registered successfully');
-    } catch (e) {
-      debugPrint('Error during registration: $e');
-    }
-  }
-
-  Future<void> _signInWithGoogle(BuildContext context) async {
-    try {
-      final GoogleSignIn googleSignIn = GoogleSignIn(
-        clientId: '41141891810-98tia2rgu16q298tt1sncac6dk5s4ftv.apps.googleusercontent.com',
-      );
-
-      // Attempt to sign in silently
-      final GoogleSignInAccount? googleUser = await googleSignIn.signInSilently();
-
-      if (googleUser == null) {
-        // If silent sign-in fails, fall back to interactive sign-in
-        final GoogleSignInAccount? interactiveUser = await googleSignIn.signIn();
-        if (interactiveUser == null) {
-          debugPrint('Sign-in canceled by user');
+        if (email.isEmpty || password.isEmpty) {
+          debugPrint('Email and password cannot be empty');
           return;
         }
+
+        // Sign in with email and password
+        await ref.read(authProvider).signInWithEmailAndPassword(email, password);
+
+        // Navigate to HomePage after successful login using GoRouter
+        context.go('/home'); // Use the route name defined in your GoRouter configuration
+      } catch (e) {
+        debugPrint('Error during email/password sign-in: $e');
       }
-
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
-
-      // Create a new credential
-      final OAuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      // Sign in to Firebase with the Google credential
-      await FirebaseAuth.instance.signInWithCredential(credential);
-
-      // Navigate to HomePage after successful login using GoRouter
-      context.go('/home'); // Use the route name defined in your GoRouter configuration
-    } catch (e) {
-      debugPrint('Error during Google Sign-In: $e');
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
+    Future<void> registerWithEmailAndPassword() async {
+      try {
+        final String email = emailController.text.trim();
+        final String password = passwordController.text.trim();
+
+        if (email.isEmpty || password.isEmpty) {
+          debugPrint('Email and password cannot be empty');
+          return;
+        }
+
+        // Register with email and password
+        await ref.read(authProvider).createUserWithEmailAndPassword(email, password);
+
+        debugPrint('User registered successfully');
+      } catch (e) {
+        debugPrint('Error during registration: $e');
+      }
+    }
+
+    Future<void> signInWithGoogle(BuildContext context) async {
+      try {
+        final GoogleSignIn googleSignIn = GoogleSignIn(
+          clientId: '41141891810-98tia2rgu16q298tt1sncac6dk5s4ftv.apps.googleusercontent.com',
+        );
+
+        // Attempt to sign in silently
+        final GoogleSignInAccount? googleUser = await googleSignIn.signInSilently();
+
+        if (googleUser == null) {
+          // If silent sign-in fails, fall back to interactive sign-in
+          final GoogleSignInAccount? interactiveUser = await googleSignIn.signIn();
+          if (interactiveUser == null) {
+            debugPrint('Sign-in canceled by user');
+            return;
+          }
+        }
+
+        // Obtain the auth details from the request
+        final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+
+        // Create a new credential
+        final OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        // Sign in to Firebase with the Google credential
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+        // Navigate to HomePage after successful login using GoRouter
+        context.go('/home'); // Use the route name defined in your GoRouter configuration
+      } catch (e) {
+        debugPrint('Error during Google Sign-In: $e');
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Welcome to STEAM.Kids')),
       body: Padding(
@@ -115,17 +111,17 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextField(
-                    controller: _emailController,
+                    controller: emailController,
                     decoration: const InputDecoration(labelText: 'Email'),
                   ),
                   TextField(
-                    controller: _passwordController,
+                    controller: passwordController,
                     decoration: const InputDecoration(labelText: 'Password'),
                     obscureText: true,
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: _signInWithEmailAndPassword,
+                    onPressed: signInWithEmailAndPassword,
                     child: const Text('Sign In'),
                   ),
                   TextButton(
@@ -144,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                         debugPrint('Navigation to HomePage complete');
                       } else {
                         debugPrint('Production mode: Performing Google Sign-In');
-                        await _signInWithGoogle(context);
+                        await signInWithGoogle(context);
                       }
                     },
                     child: const Text('Login with Google'),
@@ -158,5 +154,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-// The HomePage class is already defined elsewhere in the project, so no need to redefine it here.

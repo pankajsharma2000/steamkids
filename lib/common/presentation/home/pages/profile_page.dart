@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -91,5 +94,27 @@ class ProfilePage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Future<void> uploadUserPicture(String userId, File imageFile) async {
+  try {
+    // Upload the image to Firebase Storage
+    final storageRef = FirebaseStorage.instance
+        .ref()
+        .child('profile_pictures/$userId.jpg');
+    final uploadTask = await storageRef.putFile(imageFile);
+
+    // Get the download URL
+    final photoUrl = await storageRef.getDownloadURL();
+
+    // Save the URL in Firestore
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'photoUrl': photoUrl,
+    });
+
+    print('Profile picture uploaded and URL saved in Firestore.');
+  } catch (e) {
+    print('Error uploading profile picture: $e');
   }
 }
