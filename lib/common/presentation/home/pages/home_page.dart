@@ -58,6 +58,15 @@ class HomePage extends ConsumerWidget {
                           ),
                         ],
                       ),
+                      if (user.role.toLowerCase() == 'mentor') ...[
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            const Text('Rating: '),
+                            _buildStarRating(user.rating),
+                          ],
+                        ),
+                      ],
                       Text('YouTube: ${user.youtube}'),
                     ],
                   ),
@@ -89,5 +98,19 @@ class HomePage extends ConsumerWidget {
       default:
         return Colors.grey;
     }
+  }
+
+  // Helper function to build star rating
+  Widget _buildStarRating(int rating) {
+    const int maxStars = 5;
+    return Row(
+      children: List.generate(maxStars, (index) {
+        if (index < rating) {
+          return const Icon(Icons.star, color: Colors.amber, size: 16);
+        } else {
+          return const Icon(Icons.star_border, color: Colors.grey, size: 16);
+        }
+      }),
+    );
   }
 }

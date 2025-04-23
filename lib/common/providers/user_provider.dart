@@ -11,6 +11,7 @@ class User {
   final String interests; // New field for interests
   final String role; // New field for role (e.g., Student, Mentor, Parent)
   final String youtube; // New field for YouTube URL
+  final int rating; // Add this field to the User model
 
   User({
     required this.id,
@@ -21,6 +22,7 @@ class User {
     required this.interests,
     required this.role,
     required this.youtube,
+    required this.rating, // Add this field
   });
 
   // Factory method to create a User from Firestore document
@@ -35,6 +37,7 @@ class User {
       interests: data['interests'] ?? '', // Map interests field
       role: data['role'] ?? '', // Map role field
       youtube: data['youtube'] ?? '', // Map YouTube URL field
+      rating: data['rating'] ?? 0, // Map the rating field
     );
   }
 }
