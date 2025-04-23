@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:steamkids/common/providers/user_provider.dart';
+import 'package:steamkids/common/widgets/user_list_widget.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({super.key});
@@ -49,82 +50,11 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 user.interests.toLowerCase().contains(_searchQuery);
           }).toList();
 
-          if (filteredUsers.isEmpty) {
-            return const Center(child: Text('No users found.'));
-          }
-
-          return ListView.builder(
-            itemCount: filteredUsers.length,
-            itemBuilder: (context, index) {
-              final user = filteredUsers[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: user.photoUrl.isNotEmpty
-                        ? NetworkImage(user.photoUrl)
-                        : null,
-                    child: user.photoUrl.isEmpty
-                        ? Text(user.name.isNotEmpty ? user.name[0] : '?')
-                        : null,
-                  ),
-                  title: Text(
-                    user.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Email: ${user.email}'),
-                      Text('Skills: ${user.skills}'),
-                      Text('Interests: ${user.interests}'),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          const Text('Role: '),
-                          Chip(
-                            label: Text(
-                              user.role,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            backgroundColor: _getRoleColor(user.role),
-                          ),
-                        ],
-                      ),
-                      Text('YouTube: ${user.youtube}'),
-                    ],
-                  ),
-                  isThreeLine: true,
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // Handle tile tap (e.g., navigate to user details)
-                  },
-                ),
-              );
-            },
-          );
+          return UserListWidget(users: filteredUsers);
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Error: $error')),
       ),
     );
-  }
-
-  // Helper function to get color based on role
-  Color _getRoleColor(String role) {
-    switch (role.toLowerCase()) {
-      case 'student':
-        return Colors.blue;
-      case 'mentor':
-        return Colors.green;
-      case 'parent':
-        return Colors.orange;
-      default:
-        return Colors.grey;
-    }
   }
 }
