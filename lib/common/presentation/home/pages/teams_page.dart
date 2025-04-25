@@ -26,19 +26,18 @@ class TeamsPage extends ConsumerWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    child: Text(team.name.isNotEmpty ? team.name[0] : '?'),
-                  ),
+                child: ExpansionTile(
                   title: Text(
                     team.name,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(team.description),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // Handle tile tap (e.g., navigate to team details)
-                  },
+                  children: team.userNames.map((userName) {
+                    return ListTile(
+                      title: Text(userName),
+                      leading: const Icon(Icons.person),
+                    );
+                  }).toList(),
                 ),
               );
             },
