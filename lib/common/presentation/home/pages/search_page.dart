@@ -19,7 +19,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search'),
+        title: const Text('Users'),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(56),
           child: Padding(

@@ -62,8 +62,8 @@ class AppRouter {
                     },
                   ),
                   ListTile(
-                    leading: const Icon(Icons.search),
-                    title: const Text('Search'),
+                    leading: const Icon(Icons.person_search),
+                    title: const Text('Users'),
                     onTap: () {
                       context.go('/search');
                     },
