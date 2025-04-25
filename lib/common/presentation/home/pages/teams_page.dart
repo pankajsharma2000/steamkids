@@ -2,24 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:steamkids/common/providers/team_provider.dart';
 
-class TeamsPage extends ConsumerWidget {
+class TeamsPage extends ConsumerStatefulWidget {
   const TeamsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TeamsPage> createState() => _TeamsPageState();
+}
+
+class _TeamsPageState extends ConsumerState<TeamsPage> {
+  String _searchQuery = '';
+
+  @override
+  Widget build(BuildContext context) {
     final teamStream = ref.watch(teamProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Teams')),
+      appBar: AppBar(
+        title: const Text('Teams'),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(56),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value.toLowerCase();
+                });
+              },
+              decoration: InputDecoration(
+                hintText: 'Search teams...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
       body: teamStream.when(
         data: (teams) {
-          if (teams.isEmpty) {
+          // Filter teams based on the search query
+          final filteredTeams = teams.where((team) {
+            return team.name.toLowerCase().contains(_searchQuery) ||
+                team.description.toLowerCase().contains(_searchQuery);
+          }).toList();
+
+          if (filteredTeams.isEmpty) {
             return const Center(child: Text('No teams found.'));
           }
+
           return ListView.builder(
-            itemCount: teams.length,
+            itemCount: filteredTeams.length,
             itemBuilder: (context, index) {
-              final team = teams[index];
+              final team = filteredTeams[index];
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 elevation: 4,
