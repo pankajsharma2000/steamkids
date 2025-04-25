@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:steamkids/common/presentation/auth/pages/register_page.dart';
-import 'package:steamkids/common/presentation/home/pages/home_page.dart';
-import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart'; // For kDebugMode
 import 'package:go_router/go_router.dart'; // Import GoRouter
 import 'package:flutter_riverpod/flutter_riverpod.dart';
