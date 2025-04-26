@@ -1,6 +1,5 @@
 # Miscellaneous
 *.class
-<<<<<<< HEAD
 *.lock
 *.log
 *.pyc
@@ -118,7 +117,6 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
-=======
 *.log
 *.pyc
 *.swp
@@ -162,4 +160,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
->>>>>>> 6e8024b (Initial commit)
+
+# Avoid sending secret keys to the repository
+/lib/config/api_key.dart

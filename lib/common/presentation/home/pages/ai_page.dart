@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:steamkids/config/api_key.dart'; // Import the API key
 
 class AIPage extends StatefulWidget {
   const AIPage({super.key});
@@ -14,9 +15,6 @@ class _AIPageState extends State<AIPage> {
   final List<Map<String, String>> _messages = [];
   bool _isLoading = false;
 
-  // Replace with your OpenAI API key
-  final String _apiKey = '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';
-
   Future<void> _sendMessage(String message) async {
     setState(() {
       _messages.add({'role': 'user', 'content': message});
@@ -28,7 +26,7 @@ class _AIPageState extends State<AIPage> {
         Uri.parse('https://api.openai.com/v1/chat/completions'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_apiKey',
+          'Authorization': 'Bearer $openAIApiKey', // Use the imported API key
         },
         body: jsonEncode({
           'model': 'gpt-3.5-turbo',
