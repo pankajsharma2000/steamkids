@@ -9,8 +9,15 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: const Center(
-        child: Text('Settings Page'),
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          ListTile(
+            title: const Text('Subscription'),
+            subtitle: const Text('Basic'),
+            leading: const Icon(Icons.subscriptions),
+          ),
+        ],
       ),
     );
   }
