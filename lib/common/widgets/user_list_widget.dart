@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:steamkids/common/providers/user_provider.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import url_launcher package
 
 class UserListWidget extends StatelessWidget {
   final List<User> users;
@@ -60,7 +61,7 @@ class UserListWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start, // Ensure left alignment for expanded content
                   children: [
                     Align(
-                      alignment: Alignment.centerLeft, // Force left alignment for each text
+                      alignment: Alignment.centerLeft,
                       child: Text(
                         'Email: ${user.email}',
                         style: const TextStyle(fontSize: 14),
@@ -97,9 +98,25 @@ class UserListWidget extends StatelessWidget {
                     ],
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        'YouTube: ${user.youtube}',
-                        style: const TextStyle(fontSize: 14),
+                      child: InkWell(
+                        onTap: () async {
+                          final url = user.youtube;
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Could not open the link')),
+                            );
+                          }
+                        },
+                        child: Text(
+                          'YouTube: ${user.youtube}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
                       ),
                     ),
                   ],
