@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:steamkids/common/providers/team_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TeamsPage extends ConsumerStatefulWidget {
   const TeamsPage({super.key});
@@ -11,6 +13,60 @@ class TeamsPage extends ConsumerStatefulWidget {
 
 class _TeamsPageState extends ConsumerState<TeamsPage> {
   String _searchQuery = '';
+
+  Future<void> _joinTeam(String teamId) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('You must be logged in to join a team.')),
+      );
+      return;
+    }
+
+    try {
+      // Add the user to the team's users subcollection
+      await FirebaseFirestore.instance
+          .collection('teams')
+          .doc(teamId)
+          .collection('users')
+          .doc(user.uid)
+          .set({
+        'userId': user.uid,
+        'email': user.email,
+        'name': user.displayName ?? 'Anonymous',
+      });
+
+      // Optionally, update the user's document to store the teamId
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({'teamId': teamId});
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('You have successfully joined the team!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error joining team: $e')),
+      );
+    }
+  }
+
+  Future<bool> _isUserInTeam(String teamId) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) return false;
+
+    final userDoc = await FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    return userDoc.exists;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +124,40 @@ class _TeamsPageState extends ConsumerState<TeamsPage> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(team.description),
-                  children: team.userNames.map((userName) {
-                    return ListTile(
-                      title: Text(userName),
-                      leading: const Icon(Icons.person),
-                    );
-                  }).toList(),
+                  children: [
+                    ...team.userNames.map((userName) {
+                      return ListTile(
+                        title: Text(userName),
+                        leading: const Icon(Icons.person),
+                      );
+                    }).toList(),
+                    FutureBuilder<bool>(
+                      future: _isUserInTeam(team.id),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+
+                        if (snapshot.data == true) {
+                          return const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              'You are already a member of this team.',
+                              style: TextStyle(color: Colors.green),
+                            ),
+                          );
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () => _joinTeam(team.id), // Pass the team ID
+                            child: const Text('Join'),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               );
             },
