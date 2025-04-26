@@ -159,7 +159,7 @@ class LoginPage extends ConsumerWidget {
                         await signInWithGoogle(context);
                       }
                     },
-                    child: const Text('Login with Google'),
+                    child: const Text('Login with Google (Skipping in DEV mode)'),
                   ),
                 ],
               ),
