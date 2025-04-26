@@ -15,7 +15,7 @@ class _AIPageState extends State<AIPage> {
   bool _isLoading = false;
 
   // Replace with your OpenAI API key
-  final String _apiKey = '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';
+  final String _apiKey = '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';
 
   Future<void> _sendMessage(String message) async {
     setState(() {
