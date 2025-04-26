@@ -20,7 +20,9 @@ class LoginPage extends ConsumerWidget {
         final String password = passwordController.text.trim();
 
         if (email.isEmpty || password.isEmpty) {
-          debugPrint('Email and password cannot be empty');
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Email and password cannot be empty')),
+          );
           return;
         }
 
@@ -29,8 +31,25 @@ class LoginPage extends ConsumerWidget {
 
         // Navigate to HomePage after successful login using GoRouter
         context.go('/home'); // Use the route name defined in your GoRouter configuration
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'wrong-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Incorrect password. Please try again.')),
+          );
+        } else if (e.code == 'user-not-found') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('No user found with this email.')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${e.message}')),
+          );
+        }
       } catch (e) {
         debugPrint('Error during email/password sign-in: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('An unexpected error occurred.')),
+        );
       }
     }
 
