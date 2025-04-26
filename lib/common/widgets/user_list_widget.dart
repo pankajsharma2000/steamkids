@@ -22,7 +22,7 @@ class UserListWidget extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          child: ListTile(
+          child: ExpansionTile(
             leading: CircleAvatar(
               backgroundImage: user.photoUrl.isNotEmpty
                   ? NetworkImage(user.photoUrl)
@@ -31,46 +31,81 @@ class UserListWidget extends StatelessWidget {
                   ? Text(user.name.isNotEmpty ? user.name[0] : '?')
                   : null,
             ),
-            title: Text(
-              user.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+            title: Align(
+              alignment: Alignment.centerLeft, // Force left alignment for the title
+              child: Text(
+                user.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Email: ${user.email}'),
-                Text('Skills: ${user.skills}'),
-                Text('Interests: ${user.interests}'),
-                const SizedBox(height: 4),
-                Row(
+            subtitle: Align(
+              alignment: Alignment.centerLeft, // Force left alignment for the subtitle
+              child: Row(
+                children: [
+                  const Text('Role: '),
+                  Chip(
+                    label: Text(
+                      user.role,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: _getRoleColor(user.role),
+                  ),
+                ],
+              ),
+            ),
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Ensure left alignment for expanded content
                   children: [
-                    const Text('Role: '),
-                    Chip(
-                      label: Text(
-                        user.role,
-                        style: const TextStyle(color: Colors.white),
+                    Align(
+                      alignment: Alignment.centerLeft, // Force left alignment for each text
+                      child: Text(
+                        'Email: ${user.email}',
+                        style: const TextStyle(fontSize: 14),
                       ),
-                      backgroundColor: _getRoleColor(user.role),
+                    ),
+                    const SizedBox(height: 4),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Skills: ${user.skills}',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Interests: ${user.interests}',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    if (user.role.toLowerCase() == 'mentor') ...[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            const Text('Rating: '),
+                            _buildStarRating(user.rating),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                    ],
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'YouTube: ${user.youtube}',
+                        style: const TextStyle(fontSize: 14),
+                      ),
                     ),
                   ],
                 ),
-                if (user.role.toLowerCase() == 'mentor') ...[
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Text('Rating: '),
-                      _buildStarRating(user.rating),
-                    ],
-                  ),
-                ],
-                Text('YouTube: ${user.youtube}'),
-              ],
-            ),
-            isThreeLine: true,
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              // Handle tile tap (e.g., navigate to user details)
-            },
+              ),
+            ],
           ),
         );
       },
